@@ -1,0 +1,45 @@
+name: "data-processor"
+services:
+  postgres:
+    image: postgres:16.2-alpine
+    container_name: postgres_db
+    restart: always
+    networks:
+      - data-processor
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - ./.env
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready",
+          "-d",
+          "${POSTGRES_DB_NAME}",
+          "-U",
+          "${POSTGRES_USER}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  processor:
+    container_name: processor
+    networks:
+      - data-processor
+    ports:
+      - 8000:80
+    build:
+      dockerfile: ./Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
+networks:
+  data-processor:
+    driver: bridge
