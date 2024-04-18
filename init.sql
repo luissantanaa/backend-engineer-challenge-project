@@ -3,9 +3,9 @@ CREATE DATABASE data_points_db;
 
 CREATE TABLE "users" (
   "id" integer PRIMARY KEY,
-  "username" varchar NOT NULL,
+  "username" varchar NOT NULL UNIQUE,
   "password" varchar NOT NULL,
-  "role" varchar NOT NULL,
+  "role" varchar NOT NULL DEFAULT 'user',
   "created_at" timestamp
 );
 
