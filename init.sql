@@ -2,7 +2,7 @@ CREATE DATABASE data_points_db;
 \connect data_points_db;
 
 CREATE TABLE "users" (
-  "id" integer PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "username" varchar NOT NULL UNIQUE,
   "password" varchar NOT NULL,
   "role" varchar NOT NULL DEFAULT 'user',
@@ -10,7 +10,7 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "data_points" (
-  "id" integer PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "time" timestamp NOT NULL,
   "value" DOUBLE PRECISION NOT NULL,
   "valid" boolean NOT NULL,
