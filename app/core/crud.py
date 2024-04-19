@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from . import models, schemas
-from utils.utils import hashPassword, convertBytes, convertTimestamp, isValidDataPoint
+from .utils.utils import hashPassword, convertBytes, convertTimestamp, isValidDataPoint
 
 
 def get_user_data_points(db: Session):
@@ -9,7 +9,7 @@ def get_user_data_points(db: Session):
 
 
 def get_admin_data_points(db: Session):
-    return db.query(models.DataPoint).where(models.DataPoint.valid).all()
+    return db.query(models.DataPoint).all()
 
 
 def create_data_point(db: Session, data_point: schemas.DataPointRecieve):
@@ -17,7 +17,7 @@ def create_data_point(db: Session, data_point: schemas.DataPointRecieve):
     converted_time = convertTimestamp(data_point.time)
     valid = isValidDataPoint(data_point.tags, data_point.time)
     db_point = models.DataPoint(
-        time=converted_time, value=converted_value, valid=valid[0], tags=valid[1]
+        time=converted_time, value=converted_value, valid=valid[1], tags=valid[0]
     )
     db.add(db_point)
     db.commit()
