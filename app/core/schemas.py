@@ -1,4 +1,4 @@
-from pydantic import BaseModel, float
+from pydantic import BaseModel, float, bytes
 from datetime import datetime
 
 
@@ -12,6 +12,11 @@ class UserCreate(UserBase):
 
 class DataPointBase(BaseModel):
     time: datetime
+
+
+class DataPointRecieve(DataPointBase):
+    value: list[int]
+    tags: list[str]
 
 
 class DataPointCreate(DataPointBase):
