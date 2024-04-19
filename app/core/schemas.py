@@ -1,4 +1,4 @@
-from pydantic import BaseModel, float, bytes
+from pydantic import BaseModel
 from datetime import datetime
 
 

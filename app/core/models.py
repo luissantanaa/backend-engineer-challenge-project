@@ -15,7 +15,7 @@ from .database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     role = Column(String, default="user")
@@ -25,7 +25,7 @@ class User(Base):
 class DataPoint(Base):
     __tablename__ = "data_points"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     time = Column(TIMESTAMP)
     value = Column(DOUBLE_PRECISION)
     valid = Column(Boolean)
