@@ -1,47 +1,8 @@
 from fastapi import FastAPI
-from fastapi import Depends, FastAPI, HTTPException
-from sqlalchemy.orm import Session
-from datetime import datetime
-from .core import crud, models, schemas
-from .core.database import SessionLocal, engine
-from .core.utils.utils import getDataPoint
+from .routers import data_points_router, auth_router
 
-
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@app.get("/data/", response_model=list[schemas.DataPointUserGet])
-def read_data(
-    start: datetime = datetime.min,
-    end: datetime = datetime.max,
-    skip: int = 0,
-    limit: int = 100,
-    db: Session = Depends(get_db),
-):
-    data = crud.get_user_data_points(db, start, end)
-    return data
-
-
-@app.get("/populate/", response_model=schemas.DataPointUserGet)
-def get_data(db: Session = Depends(get_db)):
-    reqResponse = getDataPoint()
-    if reqResponse.status_code == 200:
-        data_point = schemas.DataPointRecieve.model_validate(reqResponse.json())
-        data = crud.create_data_point(db, data_point)
-        added_data = schemas.DataPointUserGet(time=data.time, value=data.value)
-        return added_data
-    else:
-        raise HTTPException(
-            status_code=reqResponse[0], detail="No data point available"
-        )
+app.include_router(data_points_router.router)
+app.include_router(auth_router.router)

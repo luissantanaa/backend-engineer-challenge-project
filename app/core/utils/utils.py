@@ -7,12 +7,6 @@ import requests
 from requests import Response
 
 
-def hashPassword(password: str) -> str:
-    salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password, salt)
-    return str(hashed_password)
-
-
 def convertBytes(values: list[int]) -> float:
     value_bytes = bytes(values)
     return struct.unpack("<f", value_bytes)[0]

@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from . import models, schemas
-from .utils.utils import hashPassword, convertBytes, convertTimestamp, isValidDataPoint
+from .utils.utils import convertBytes, convertTimestamp, isValidDataPoint
 
 
 def get_user_data_points(db: Session, start: datetime, end: datetime):
@@ -35,12 +35,3 @@ def create_data_point(db: Session, data_point: schemas.DataPointRecieve):
     db.commit()
     db.refresh(db_point)
     return db_point
-
-
-def create_user(db: Session, user: schemas.UserCreate):
-    hashedPassword = hashPassword(user.password)
-    db_user = models.User(username=user.username, hashed_password=hashedPassword)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
