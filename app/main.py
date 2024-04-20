@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
+from datetime import datetime
 from .core import crud, models, schemas
 from .core.database import SessionLocal, engine
 from .core.utils.utils import getDataPoint
@@ -20,19 +21,20 @@ def get_db():
         db.close()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 @app.get("/data/", response_model=list[schemas.DataPointUserGet])
-def read_data(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    data = crud.get_user_data_points(db)
+def read_data(
+    start: datetime = datetime.min,
+    end: datetime = datetime.max,
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    data = crud.get_user_data_points(db, start, end)
     return data
 
 
 @app.get("/populate/", response_model=schemas.DataPointUserGet)
-def get_data(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_data(db: Session = Depends(get_db)):
     reqResponse = getDataPoint()
     if reqResponse.status_code == 200:
         data_point = schemas.DataPointRecieve.model_validate(reqResponse.json())
