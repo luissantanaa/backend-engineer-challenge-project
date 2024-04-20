@@ -2,7 +2,7 @@ import struct
 import os
 from typing import Tuple
 import bcrypt
-from datetime import datetime, timedelta
+from datetime import datetime
 import requests
 from requests import Response
 
@@ -27,10 +27,6 @@ def isValidDataPoint(tags: list[str], time: datetime) -> Tuple[list[str], bool]:
     if "system" in tags or "suspect" in tags:
         valid = False
     else:
-        # unix_timestamp = datetime.fromtimestamp(
-        #     datetime.now() - datetime(1970, 1, 1)
-        # ).total_seconds()
-
         current_datetime = datetime.now()
         unix_timestamp = current_datetime.timestamp()
         if (unix_timestamp - time.timestamp()) / 3600 > 1:
