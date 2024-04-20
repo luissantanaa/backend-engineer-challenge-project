@@ -7,3 +7,8 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+
+
+class UserGet(UserBase):
+    class Config:
+        orm_mode = True

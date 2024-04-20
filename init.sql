@@ -4,7 +4,7 @@ CREATE DATABASE data_points_db;
 CREATE TABLE "users" (
   "id" serial PRIMARY KEY,
   "username" varchar NOT NULL UNIQUE,
-  "password" varchar NOT NULL,
+  "hashed_password" varchar NOT NULL,
   "role" varchar NOT NULL DEFAULT 'user',
   "created_at" timestamp
 );

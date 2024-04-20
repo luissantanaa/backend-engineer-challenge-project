@@ -161,3 +161,4 @@ cython_debug/
 
 clean.sh
 postgres_data
+*.txt
