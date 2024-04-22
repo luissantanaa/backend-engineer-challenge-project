@@ -1,14 +1,17 @@
 from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
 
 from ..core import crud, models, schemas
-from ..core.database import engine
+
+# from ..core.database import engine
 from ..core.utils.utils import getDataPoint
 from app.auth.auth_core.schemas import UserAuth
 from app.deps.dependencies import get_db, get_current_user
 
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter(prefix="/api", tags=["Data Points"])
 
@@ -18,18 +21,18 @@ router = APIRouter(prefix="/api", tags=["Data Points"])
     response_model=list[schemas.DataPointGet],
     description="Gets data points stored in database within the given range",
 )
-def read_data(
+async def read_data(
     start: datetime = datetime.min,
     end: datetime = datetime.max,
     skip: int = 0,
     limit: int = 100,
     user: UserAuth = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     if user.role == "admin":
-        data = crud.get_admin_data_points(db, start, end, skip, limit)
+        data = await crud.get_admin_data_points(db, start, end, skip, limit)
     else:
-        data = crud.get_user_data_points(db, start, end, skip, limit)
+        data = await crud.get_user_data_points(db, start, end, skip, limit)
     return data
 
 
@@ -38,21 +41,21 @@ def read_data(
     response_model=schemas.DataPointGet,
     description="Allows admins to populate the database with calls to external server",
 )
-def get_data(
-    db: Session = Depends(get_db),
-    user: UserAuth = Depends(get_current_user),
+async def get_data(
+    db: AsyncSession = Depends(get_db),
+    user: AsyncSession = Depends(get_current_user),
 ):
 
     if user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Incorrect username or password",
+            detail="Unauthorized",
         )
 
     reqResponse = getDataPoint()
     if reqResponse.status_code == 200:
         data_point = schemas.DataPointRecieve.model_validate(reqResponse.json())
-        data = crud.create_data_point(db, data_point)
+        data = await crud.create_data_point(db, data_point)
         added_data = schemas.DataPointGet(
             time=data.time, value=data.value, valid=data.valid, tags=data.tags
         )

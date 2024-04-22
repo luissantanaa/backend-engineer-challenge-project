@@ -12,7 +12,8 @@ def convertBytes(values: list[int]) -> float:
 
 
 def convertTimestamp(time: datetime) -> datetime:
-    return time.isoformat()
+    iso_str = time.isoformat()
+    return datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%S%z")
 
 
 def isValidDataPoint(tags: list[str], time: datetime) -> Tuple[list[str], bool]:

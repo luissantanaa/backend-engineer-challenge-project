@@ -1,4 +1,6 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from app.core.database import sessionmanager
 from .routers import data_points_router, auth_router
 
 description = """
@@ -15,9 +17,19 @@ The user section allows the creation and authorization of users.
 """
 
 
-app = FastAPI(
-    description=description,
-)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Function that handles startup and shutdown events.
+    To understand more, read https://fastapi.tiangolo.com/advanced/events/
+    """
+    yield
+    if sessionmanager._engine is not None:
+        # Close the DB connection
+        await sessionmanager.close()
+
+
+app = FastAPI(description=description, lifespan=lifespan)
 
 app.include_router(data_points_router.router)
 app.include_router(auth_router.router)
