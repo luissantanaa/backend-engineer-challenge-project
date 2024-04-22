@@ -11,7 +11,7 @@ CREATE TABLE "users" (
 
 CREATE TABLE "data_points" (
   "id" serial PRIMARY KEY,
-  "time" timestamp NOT NULL,
+  "time" timestamptz NOT NULL,
   "value" DOUBLE PRECISION NOT NULL,
   "valid" boolean NOT NULL,
   "tags" varchar[],
