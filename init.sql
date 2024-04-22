@@ -17,3 +17,5 @@ CREATE TABLE "data_points" (
   "tags" varchar[],
   "created_at" timestamp
 );
+
+INSERT INTO USERS(id, username, hashed_password, role) VALUES(0, 'admin', '$2b$12$a/pMatsPyWuHa5KdqatsFOLZgPYjPZU4If4//jeretXqZ.ujoYFJG','admin')
