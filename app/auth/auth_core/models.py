@@ -16,4 +16,3 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     role = Column(String, default="user")
-    created_at = Column(TIMESTAMP, server_default=func.now())

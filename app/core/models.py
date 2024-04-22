@@ -20,4 +20,3 @@ class DataPoint(Base):
     value = Column(DOUBLE_PRECISION)
     valid = Column(Boolean)
     tags = Column(ARRAY(String))
-    created_at = Column(TIMESTAMP, server_default=func.now())
