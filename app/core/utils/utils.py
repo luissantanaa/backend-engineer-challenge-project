@@ -1,7 +1,6 @@
 import struct
 import os
 from typing import Tuple
-import bcrypt
 from datetime import datetime
 import requests
 from requests import Response
@@ -33,6 +32,11 @@ def isValidDataPoint(tags: list[str], time: datetime) -> Tuple[list[str], bool]:
 def getDataPoint() -> Response:
     server_url = os.getenv("SERVER_URL")
     server_port = os.getenv("SERVER_PORT")
-    req = requests.get("http://" + server_url + ":" + server_port)
+    response = Response()
 
-    return req
+    try:
+        response = requests.get("http://" + server_url + ":" + server_port)
+    except:
+        response.status_code = 502
+
+    return response
