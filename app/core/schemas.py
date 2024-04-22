@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 
@@ -11,23 +11,8 @@ class DataPointRecieve(DataPointBase):
     tags: list[str]
 
 
-class DataPointCreate(DataPointBase):
+class DataPointGet(DataPointBase):
+    model_config = ConfigDict(from_attributes=True)
     value: float
     valid: bool
     tags: list[str]
-
-
-class DataPointUserGet(DataPointBase):
-    value: float
-
-    class Config:
-        orm_mode = True
-
-
-class DataPointAdminGet(DataPointBase):
-    value: float
-    valid: bool
-    tags: list[str]
-
-    class Config:
-        orm_mode = True
