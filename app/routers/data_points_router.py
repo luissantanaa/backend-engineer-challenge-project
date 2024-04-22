@@ -10,10 +10,14 @@ from app.deps.dependencies import get_db, get_current_user
 
 models.Base.metadata.create_all(bind=engine)
 
-router = APIRouter(tags=["Data Points"])
+router = APIRouter(prefix="/api", tags=["Data Points"])
 
 
-@router.get("/data/", response_model=list[schemas.DataPointGet])
+@router.get(
+    "/data",
+    response_model=list[schemas.DataPointGet],
+    description="Gets data points stored in database within the given range",
+)
 def read_data(
     start: datetime = datetime.min,
     end: datetime = datetime.max,
@@ -23,13 +27,17 @@ def read_data(
     db: Session = Depends(get_db),
 ):
     if user.role == "admin":
-        data = crud.get_admin_data_points(db, start, end)
+        data = crud.get_admin_data_points(db, start, end, skip, limit)
     else:
-        data = crud.get_user_data_points(db, start, end)
+        data = crud.get_user_data_points(db, start, end, skip, limit)
     return data
 
 
-@router.get("/populate/", response_model=schemas.DataPointGet)
+@router.get(
+    "/populate",
+    response_model=schemas.DataPointGet,
+    description="Allows admins to populate the database with calls to external server",
+)
 def get_data(
     db: Session = Depends(get_db),
     user: UserAuth = Depends(get_current_user),

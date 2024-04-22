@@ -14,10 +14,14 @@ from app.deps.dependencies import get_db
 
 models.Base.metadata.create_all(bind=engine)
 
-router = APIRouter(tags=["Users"])
+router = APIRouter(prefix="/auth", tags=["Users"])
 
 
-@router.post("/signup", summary="Create new user")
+@router.post(
+    "/signup",
+    summary="Create new user",
+    description="Allows for the creation of a new user",
+)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     user_in_db = crud.get_user(db, user.username)
     if user_in_db is not None:
@@ -29,7 +33,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/login/", response_model=schemas.TokenSchema)
+@router.post(
+    "/login",
+    response_model=schemas.TokenSchema,
+    description="Logs in user",
+)
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):

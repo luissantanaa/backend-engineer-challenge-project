@@ -12,7 +12,7 @@ from app.auth.auth_core import schemas
 from app.core.database import SessionLocal
 
 
-reuseable_oauth = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="JWT")
+reuseable_oauth = OAuth2PasswordBearer(tokenUrl="/auth/login", scheme_name="JWT")
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
