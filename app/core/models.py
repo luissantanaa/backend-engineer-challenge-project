@@ -1,7 +1,6 @@
 from sqlalchemy import (
     Boolean,
     Column,
-    DateTime,
     Integer,
     String,
     TIMESTAMP,
@@ -17,7 +16,7 @@ class DataPoint(Base):
     __tablename__ = "data_points"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    time = Column(DateTime)
+    time = Column(type_=TIMESTAMP(timezone=True))
     value = Column(DOUBLE_PRECISION)
     valid = Column(Boolean)
     tags = Column(ARRAY(String))
