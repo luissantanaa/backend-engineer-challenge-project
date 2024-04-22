@@ -5,21 +5,29 @@ from . import models, schemas
 from .utils.utils import convertBytes, convertTimestamp, isValidDataPoint
 
 
-def get_user_data_points(db: Session, start: datetime, end: datetime):
+def get_user_data_points(
+    db: Session, start: datetime, end: datetime, skip: int, limit: int
+):
     return (
         db.query(models.DataPoint)
         .where(models.DataPoint.valid)
         .where(models.DataPoint.time >= start)
         .where(models.DataPoint.time <= end)
+        .limit(limit)
+        .offset(skip)
         .all()
     )
 
 
-def get_admin_data_points(db: Session, start: datetime, end: datetime):
+def get_admin_data_points(
+    db: Session, start: datetime, end: datetime, skip: int, limit: int
+):
     return (
         db.query(models.DataPoint)
         .where(models.DataPoint.time >= start)
         .where(models.DataPoint.time <= end)
+        .limit(limit)
+        .offset(skip)
         .all()
     )
 
