@@ -1,5 +1,14 @@
 # backend-engineer-challenge-project
 
+## How to run
+In the root directory, run: 
+```
+docker compose up
+```
+While running, you can access the /docs endpoint to get the OpenAPI page for the project.
+
+The init.sql file present also creates an admin user automatically.
+
 ## Description
 
 This project exposes an API built with Python, FastAPI, SQLAlchemy and uses a PostgreSQL database. The project has asynchronous endpoints and database sessions and is containerized using Docker with a docker compose file to run.
@@ -27,6 +36,30 @@ After receiving this data, the service processes the "time" field into a ISO8601
     "tags": []
 }
 ```
+
+## API Endpoints
+The project exposes four endpoints:
+```
+GET  /api/data
+GET  /api/populate
+POST /auth/login
+POST /auth/signup
+```
+The data endpoint returns the data points stored in the database and takes the following optional parameters:
+```   
+start: datetime
+end: datetime
+skip: int
+limit: int
+```
+The start and end parameters are used to select the range of data points to be returned to the user.
+The skip parameter is used to offset the data points returned and limit limits the number of points.
+If the endpoint is called by a normal user, then all the data points returned are valid while an admin gets valid and invalid data points.
+
+The populate endpoint performs a call to the external server and adds the returned data to the data base. This endpoint can only be called by an admin.
+
+The signup endpoint takes a username and a password and creates a user if the username is not taken.
+The login endpoint takes a username and a password and returns an access/refresh JWT upon a successful authentication. 
 
 ## Docker Utilities
 
@@ -106,28 +139,6 @@ COPY ./app /code/app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
-## API Endpoints
-The project exposes four endpoints:
-```
-GET /api/data
-GET /api/populate
-POST /auth/login
-POST /auth/signup
-```
-The data endpoint returns the data points stored in the database and takes the following optional parameters:
-```   
-start: datetime
-end: datetime
-skip: int
-limit: int
-```
-The start and end parameters are used to select the range of data points to be returned to the user.
-The skip parameter is used to offset the data points returned and limit limits the number of points.
-
-The populate endpoint performs a call to the external server and adds the returned data to the data base.
-
-The signup endpoint takes a username and a password and creates a user if the username is not taken.
-The login endpoint takes a username and a password and returns an access/refresh JWT upon a successful authentication. 
 
 
 
