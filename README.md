@@ -61,6 +61,26 @@ The populate endpoint performs a call to the external server and adds the return
 The signup endpoint takes a username and a password and creates a user if the username is not taken.
 The login endpoint takes a username and a password and returns an access/refresh JWT upon a successful authentication. 
 
+## .env file
+
+The project requires a .env file with the following fields:
+```
+POSTGRES_DB_NAME
+POSTGRES_USER
+POSTGRES_PASSWORD
+POSTGRES_SERVER
+PGUSER
+SERVER_URL
+SERVER_PORT
+
+ACCESS_TOKEN_EXPIRE_MINUTES
+REFRESH_TOKEN_EXPIRE_MINUTES
+JWT_SECRET_KEY
+JWT_REFRESH_SECRET_KEY
+ALGORITHM
+```
+Normally, this file would not be present in the repository but in this case it is included for testing purposes.
+
 ## Docker Utilities
 
 Docker compose: 
