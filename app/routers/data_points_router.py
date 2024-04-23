@@ -1,17 +1,11 @@
-from fastapi import APIRouter, status, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
-from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
+from fastapi import APIRouter, status, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..core import crud, models, schemas
-
-# from ..core.database import engine
-from ..core.utils.utils import getDataPoint
+from app.core import crud, schemas
+from app.core.utils.utils import get_data_point
 from app.auth.auth_core.schemas import UserAuth
 from app.deps.dependencies import get_db, get_current_user
-
-# models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter(prefix="/api", tags=["Data Points"])
 
@@ -52,13 +46,13 @@ async def get_data(
             detail="Unauthorized",
         )
 
-    reqResponse = getDataPoint()
-    if reqResponse.status_code == 200:
-        data_point = schemas.DataPointRecieve.model_validate(reqResponse.json())
+    req_response = get_data_point()
+    if req_response.status_code == 200:
+        data_point = schemas.DataPointRecieve.model_validate(req_response.json())
         data = await crud.create_data_point(db, data_point)
         added_data = schemas.DataPointGet(
             time=data.time, value=data.value, valid=data.valid, tags=data.tags
         )
         return added_data
     else:
-        raise HTTPException(reqResponse.status_code, detail="No data point available")
+        raise HTTPException(req_response.status_code, detail="No data point available")

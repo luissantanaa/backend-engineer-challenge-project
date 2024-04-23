@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from . import models, schemas
-from .utils.utils import convertBytes, convertTimestamp, isValidDataPoint
+from .utils.utils import convert_bytes, convert_timestamp, is_valid_data_point
 
 
 async def get_user_data_points(
@@ -36,9 +36,9 @@ async def get_admin_data_points(
 
 
 async def create_data_point(db: AsyncSession, data_point: schemas.DataPointRecieve):
-    converted_value = convertBytes(data_point.value)
-    converted_time = convertTimestamp(data_point.time)
-    tags, valid = isValidDataPoint(data_point.tags, data_point.time)
+    converted_value = convert_bytes(data_point.value)
+    converted_time = convert_timestamp(data_point.time)
+    tags, valid = is_valid_data_point(data_point.tags, data_point.time)
     db_point = models.DataPoint(
         time=converted_time, value=converted_value, valid=valid, tags=tags
     )
