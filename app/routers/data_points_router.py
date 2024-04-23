@@ -54,5 +54,5 @@ async def get_data(
             time=data.time, value=data.value, valid=data.valid, tags=data.tags
         )
         return added_data
-    else:
-        raise HTTPException(req_response.status_code, detail="No data point available")
+
+    raise HTTPException(req_response.status_code, detail="No data point available")
