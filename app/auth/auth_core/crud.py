@@ -2,7 +2,6 @@ import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-
 from app.auth.auth_utils.auth_utils import hashPassword
 from app.auth.auth_core import schemas, models
 
