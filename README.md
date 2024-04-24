@@ -208,4 +208,203 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
 
+## Postman Collection
+Besides using the sandbox in /docs, you can also use the following postman collection to test the API. Reminder that the /populate and /data endpoints require a Bearer token obtained from the /login endpoint.
 
+```
+{
+	"info": {
+		"_postman_id": "dc1d2ddc-a7b6-4763-8cae-7ebb59e93f49",
+		"name": "Data Points Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34499909"
+	},
+	"item": [
+		{
+			"name": "POST LOGIN",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST SIGNUP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"test\",\n    \"password\":\"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"signup"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "teste",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "teste",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET DATA",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const toISOString = date => date.toISOString();",
+							"var start_timestamp = toISOString(new Date(\"2024-04-24T10:24:05Z\"))",
+							"pm.globals.set(\"start_timestamp\", start_timestamp);",
+							"",
+							"var end_timestamp = toISOString(new Date(\"2024-04-24T10:24:05Z\"))",
+							"pm.globals.set(\"end_timestamp\", end_timestamp);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/data?start=2024-04-24T10:24:04Z&end=2024-04-24T10:24:04Z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"data"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2024-04-24T10:24:04Z"
+						},
+						{
+							"key": "end",
+							"value": "2024-04-24T10:24:04Z"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET POPULATE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/populate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"populate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
+```
