@@ -7,7 +7,7 @@ docker compose up
 ```
 While running, you can access the /docs endpoint to get the OpenAPI page for the project.
 
-The init.sql file present also creates an admin user automatically.
+The init.sql file present also creates an admin user automatically. You can use this admin with username:"admin" password:"admin".
 
 ## Description
 
@@ -70,6 +70,9 @@ POSTGRES_USER
 POSTGRES_PASSWORD
 POSTGRES_SERVER
 PGUSER
+
+POSTGRES_TEST_DB_NAME
+
 SERVER_URL
 SERVER_PORT
 
@@ -80,6 +83,51 @@ JWT_REFRESH_SECRET_KEY
 ALGORITHM
 ```
 Normally, this file would not be present in the repository but in this case it is included for testing purposes.
+
+## Database tables
+The project uses the init.sql file to create the databases when initializing the containers for the first time. It creates two databases with the same tables, one for production and one for testing.
+```
+CREATE DATABASE data_points_db;
+\connect data_points_db;
+
+CREATE TABLE "users" (
+  "id" serial PRIMARY KEY,
+  "username" varchar NOT NULL UNIQUE,
+  "hashed_password" varchar NOT NULL,
+  "role" varchar NOT NULL DEFAULT 'user'
+);
+
+CREATE TABLE "data_points" (
+  "id" serial PRIMARY KEY,
+  "time" timestamptz NOT NULL,
+  "value" DOUBLE PRECISION NOT NULL,
+  "valid" boolean NOT NULL,
+  "tags" varchar[]
+);
+
+INSERT INTO USERS(id, username, hashed_password, role) VALUES(0, 'admin', '$2b$12$a/pMatsPyWuHa5KdqatsFOLZgPYjPZU4If4//jeretXqZ.ujoYFJG','admin');
+
+CREATE DATABASE test_data_points_db;
+\connect test_data_points_db;
+
+CREATE TABLE "users" (
+  "id" serial PRIMARY KEY,
+  "username" varchar NOT NULL UNIQUE,
+  "hashed_password" varchar NOT NULL,
+  "role" varchar NOT NULL DEFAULT 'user'
+);
+
+CREATE TABLE "data_points" (
+  "id" serial PRIMARY KEY,
+  "time" timestamptz NOT NULL,
+  "value" DOUBLE PRECISION NOT NULL,
+  "valid" boolean NOT NULL,
+  "tags" varchar[]
+);
+
+INSERT INTO USERS(id, username, hashed_password, role) VALUES(0, 'admin', '$2b$12$a/pMatsPyWuHa5KdqatsFOLZgPYjPZU4If4//jeretXqZ.ujoYFJG','admin');
+```
+The "insert" lines create an admin user for testing.
 
 ## Docker Utilities
 
