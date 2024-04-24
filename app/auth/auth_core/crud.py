@@ -1,11 +1,17 @@
+import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+
 
 from app.auth.auth_utils.auth_utils import hashPassword
 from app.auth.auth_core import schemas, models
 
 
 async def create_user(db: AsyncSession, user: schemas.UserCreate):
+    logging.info(
+        "CREATE_USER with username:%s",
+        user.username,
+    )
     hashedPassword = hashPassword(user.password)
     db_user = models.User(username=user.username, hashed_password=hashedPassword)
     db.add(db_user)
@@ -16,6 +22,11 @@ async def create_user(db: AsyncSession, user: schemas.UserCreate):
 
 
 async def get_user(db: AsyncSession, username: str):
+    logging.info(
+        "GET_USER with username:%s",
+        username,
+    )
+
     query = select(models.User).where(models.User.username == username)
     result = await db.execute(query)
     return result.scalars().first()

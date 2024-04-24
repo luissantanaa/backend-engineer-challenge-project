@@ -1,7 +1,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from app.logging.logs import configure_logging
 from app.core.database import sessionmanager
-from .routers import data_points_router, auth_router
+from app.routers import data_points_router, auth_router
+
+configure_logging()
 
 description = """
 Data Points API
