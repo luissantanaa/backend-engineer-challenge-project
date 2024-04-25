@@ -211,6 +211,8 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 ## Postman Collection
 Besides using the sandbox in /docs, you can also use the following postman collection to test the API. Reminder that the /populate and /data endpoints require a Bearer token obtained from the /login endpoint.
 
+Both /signup and /login come with request bodies prepared to test the endpoints.
+
 ```
 {
 	"info": {
