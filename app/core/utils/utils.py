@@ -18,14 +18,14 @@ def convert_timestamp(time: datetime) -> datetime:
 
 def is_valid_data_point(tags: list[str], time: datetime) -> Tuple[list[str], bool]:
     valid = True
-    if "system" in tags or "suspect" in tags:
+
+    current_datetime = datetime.now()
+    unix_timestamp = current_datetime.timestamp()
+    if (unix_timestamp - time.timestamp()) / 3600 > 1:
+        tags.append("too old")
+
+    if "system" in tags or "suspect" in tags or "too old" in tags:
         valid = False
-    else:
-        current_datetime = datetime.now()
-        unix_timestamp = current_datetime.timestamp()
-        if (unix_timestamp - time.timestamp()) / 3600 > 1:
-            valid = False
-            tags.append("too old")
 
     return [tags, valid]
 
