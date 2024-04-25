@@ -351,7 +351,7 @@ Besides using the sandbox in /docs, you can also use the following postman colle
 					"formdata": []
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/data?start=2024-04-24T10:24:04Z&end=2024-04-24T10:24:04Z",
+					"raw": "http://localhost:8080/api/data?start=2024-04-25T07:40:33Z&end=2024-04-25T07:40:33Z&skip=0&limit=100",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -364,11 +364,19 @@ Besides using the sandbox in /docs, you can also use the following postman colle
 					"query": [
 						{
 							"key": "start",
-							"value": "2024-04-24T10:24:04Z"
+							"value": "2024-04-25T07:40:33Z"
 						},
 						{
 							"key": "end",
-							"value": "2024-04-24T10:24:04Z"
+							"value": "2024-04-25T07:40:33Z"
+						},
+						{
+							"key": "skip",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "100"
 						}
 					]
 				}
