@@ -318,12 +318,7 @@ Besides using the sandbox in /docs, you can also use the following postman colle
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"const toISOString = date => date.toISOString();",
-							"var start_timestamp = toISOString(new Date(\"2024-04-24T10:24:05Z\"))",
-							"pm.globals.set(\"start_timestamp\", start_timestamp);",
-							"",
-							"var end_timestamp = toISOString(new Date(\"2024-04-24T10:24:05Z\"))",
-							"pm.globals.set(\"end_timestamp\", end_timestamp);"
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
