@@ -214,7 +214,7 @@ Besides using the sandbox in /docs, you can also use the following postman colle
 ```
 {
 	"info": {
-		"_postman_id": "dc1d2ddc-a7b6-4763-8cae-7ebb59e93f49",
+		"_postman_id": "27b79feb-1110-4ceb-b177-ca02e0635266",
 		"name": "Data Points Service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "34499909"
@@ -256,13 +256,13 @@ Besides using the sandbox in /docs, you can also use the following postman colle
 					],
 					"query": [
 						{
-							"key": "username",
-							"value": "admin",
+							"key": "",
+							"value": "",
 							"disabled": true
 						},
 						{
-							"key": "password",
-							"value": "admin",
+							"key": "",
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -297,13 +297,13 @@ Besides using the sandbox in /docs, you can also use the following postman colle
 					],
 					"query": [
 						{
-							"key": "username",
-							"value": "teste",
+							"key": "",
+							"value": "",
 							"disabled": true
 						},
 						{
-							"key": "password",
-							"value": "teste",
+							"key": "",
+							"value": "",
 							"disabled": true
 						}
 					]
